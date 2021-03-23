@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 
 import "./styles.scss";
 
@@ -33,32 +33,72 @@ export default function Appointment (props) {
       student: name,
       interviewer
     };
+  
+    transition(SAVING);
+  
+    props
+    .bookInterview(props.id, interview, transition, SHOW, ERROR_SAVE)
+  }
 
-    transition(SAVING)
-    props.bookInterview(props.id, interview)
-    .then(() => transition(SHOW))
+  function deleteAppointment() {
+    transition(DELETING);
+
+    props
+    .cancelInterview(props.id, transition, EMPTY, ERROR_DELETE)
   }
 
   return (
     <article className="appointment">
-      <Header time={props.time}/>
+      <Header time={props.time} />
       {mode === EMPTY && <Empty onAdd={() => transition(CREATE)} />}
-      {mode === SHOW && (
-      <Show
-        student={props.interview.student}
-        interviewer={props.interview.interviewer}
-        onEdit={props.onEdit}
-        onDelete={props.onDelete}
-      />
+      {mode === SHOW && props.interview && (
+        <Show
+          student={props.interview.student}
+          interviewer={props.interview.interviewer}
+          onDelete={() => transition(CONFIRM)}
+          onEdit={() => transition(EDIT)}
+          />
       )}
-      {mode === CREATE &&
-      <Form
-      name={props.name}
-      value={props.value}
-      interviewers={props.interviewers}
-      onSave={save}
-      onCancel={back}
-      />}
+
+      { mode === CREATE && (
+        <Form
+          name={props.name}
+          value={props.value}
+          interviewers={[props.interviewers]}
+          onSave={save}
+          onCancel={back}
+        />
+      )}
+
+      {mode === SAVING && (<Status message="Saving"/>)}
+      {mode === DELETING && (<Status message="Deleting"/>)}
+
+      {mode === CONFIRM && (
+        <Confirm
+          onCancel={() => back()}
+          onConfirm={deleteAppointment}
+        />
+      )}
+
+      {mode === EDIT &&(
+        <Form
+          name={props.interview.student}
+          interviewer={props.interview.interviewer.id}
+          interviewers={props.interviewers}
+          onSave={save}
+          onCancel={() => back()}
+        />
+      )}
+      
+      {mode === ERROR_DELETE && (
+        <Error message="Error Deleting Appointment" onClose={() => back()} />
+      )}
+
+      {mode === ERROR_SAVE && (
+        <Error message="Error Saving Appointment" onClose={() => back()} />
+      )}
+
+
     </article>
   )
 
