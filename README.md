@@ -1,7 +1,7 @@
 # Interview Scheduler
 
 Interview Scheduler is a React application that allows you to track student appointments and assign interviewers.
-The sidebar will indicate the number of free spots available as well as if the day is fully booked.
+The sidebar will indicate the number of free spots available as well as whether the day is fully booked.
 
 ## Final Product
 
