@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import Button from "../Button";
-import InterviewerList from "../InterviewerList";
+import InterviewerList from "components/InterviewerList";
 
 export default function Form (props) {
 
@@ -26,6 +26,7 @@ export default function Form (props) {
   
     setError("");
     props.onSave(props.name, props.interviewer);
+    
   }
 
   return (
@@ -43,12 +44,15 @@ export default function Form (props) {
             data-testid="student-name-input"
           />
         </form>
-        <InterviewerList interviewers={props.interviewers} value={interviewer} onChange={setInterviewer} />
+        <InterviewerList 
+        interviewers={props.interviewers} 
+        value={interviewer} 
+        onChange={setInterviewer} />
       </section>
       <section className="appointment__card-right">
         <section className="appointment__actions">
           <Button onClick={cancel} danger>Cancel</Button>
-          <Button onClick={validate} confirm>Save</Button>
+          <Button onSubmit={event => event.preventDefault()} onClick={validate} confirm>Save</Button>
         </section>
       </section>
     </main>

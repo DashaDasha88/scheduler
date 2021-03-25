@@ -11,7 +11,6 @@ import Error from "components/Appointment/Error";
 import Form from "components/Appointment/Form";
 import { useVisualMode } from "hooks/useVisualMode";
 
-
 export default function Appointment (props) {
   
   const EMPTY = "EMPTY";
@@ -29,15 +28,17 @@ export default function Appointment (props) {
   );
 
   function save(name, interviewer) {
+    transition(SAVING);
+
     const interview = {
       student: name,
       interviewer
     };
-  
-    transition(SAVING);
-  
-    props
-    .bookInterview(props.id, interview, transition, SHOW, ERROR_SAVE)
+
+    props.bookInterview(props.id, interview)
+      .then(() => transition(SHOW))
+      .catch(error => transition(ERROR_SAVE, true));
+
   }
 
   function deleteAppointment() {
@@ -75,6 +76,7 @@ export default function Appointment (props) {
 
       {mode === CONFIRM && (
         <Confirm
+          message="Are you sure you would like to delete?"
           onCancel={() => back()}
           onConfirm={deleteAppointment}
         />

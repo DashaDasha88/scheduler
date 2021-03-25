@@ -39,7 +39,7 @@ describe("Form", () => {
 
     fireEvent.click(getByText("Save"));
 
-    expect(getByText(/student name cannot be blank/i)).toBeInTheDocument();
+    expect(getByText("Student name cannot be blank")).toBeInTheDocument();
     expect(onSave).not.toHaveBeenCalled();
   });
 
