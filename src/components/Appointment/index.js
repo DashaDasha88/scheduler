@@ -10,31 +10,31 @@ import Confirm from "components/Appointment/Confirm";
 import Error from "components/Appointment/Error";
 import Form from "components/Appointment/Form";
 import { useVisualMode } from "hooks/useVisualMode";
+  
+const EMPTY = "EMPTY";
+const SHOW = "SHOW";
+const CREATE = "CREATE";
+const SAVING = "SAVING";
+const DELETING = "DELETING";
+const CONFIRM = "CONFIRM";
+const EDIT = "EDIT";
+const ERROR_SAVE = "ERROR_SAVE";
+const ERROR_DELETE = "ERROR_DELETE";
 
 export default function Appointment (props) {
-  
-  const EMPTY = "EMPTY";
-  const SHOW = "SHOW";
-  const CREATE = "CREATE";
-  const SAVING = "SAVING";
-  const DELETING = "DELETING";
-  const CONFIRM = "CONFIRM";
-  const EDIT = "EDIT";
-  const ERROR_SAVE = "ERROR_SAVE";
-  const ERROR_DELETE = "ERROR_DELETE";
 
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY
   );
 
   function save(name, interviewer) {
-    transition(SAVING);
-
     const interview = {
       student: name,
       interviewer
     };
 
+    transition(SAVING);
+    
     props.bookInterview(props.id, interview)
       .then(() => transition(SHOW))
       .catch(error => transition(ERROR_SAVE, true));
