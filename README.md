@@ -23,6 +23,7 @@ The sidebar will indicate the number of free spots available as well as whether 
 
 - React
 - React-dom
+- React-hooks-testing-library
 - Axios
 - Babel
 - Classnames
